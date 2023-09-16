@@ -55,8 +55,18 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
     .populate({ path: 'author', model: User})
     .populate({
       path: 'children',
-      model: User,
-      select: "_id name parentId image"
-    }
-  )
+      populate: {
+        path: 'author',
+        model: User,
+        select: "_id name parentId image"
+      }
+    })
+
+    const totalPostsCount = await Thread.countDocuments({parentId: { $in: [null, undefined]}})
+
+    const posts = await postsQuery.exec()
+
+    const isNext = totalPostsCount > skipAmount + posts.length;
+
+    return { posts, isNext }
 }
