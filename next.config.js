@@ -28,7 +28,8 @@ const nextConfig = {
         hostname: "placehold.co",
       },
     ],
+    domains: ["utfs.io"],
   },
 };
 
-module.exports = nextConfig;    
+module.exports = nextConfig;
